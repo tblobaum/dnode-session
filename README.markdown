@@ -1,9 +1,12 @@
-dnode-sessions
-==============
+dnode-session
+=============
+
+Installation
+------------
 
     npm install dnode-session
 
-1. Pass the same session into dnodeSession as you did with express
+Pass the same session into dnodeSession as you did with express
 
 ```javascript
 var dnodeSession = require('dnode-session');
@@ -15,8 +18,8 @@ Dnode()
     .listen(app);
 ````
 
-2. Run some dnode, and have acess to the same session that your client has access to in express
-3. Example - this is how you do it with mongoose-auth
+Run some dnode, and have acess to the same session that your client has access to in express
+
 
 Example
 -------
