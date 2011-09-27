@@ -7,18 +7,21 @@ dnode-sessions
 
     var dnodeSession = require('dnode-session');
 
-     Dnode()
+````javascript
+    Dnode()
         .use(dnodeSession( {store: new MonSession({interval: 120000 })} )) // <-- use the same as your express app
         .use(dnodeAuth) // <-- see the DnodeAuth example below
         .use(exampleApp) // <-- see the example dnode app below that implements dnode-session
         .listen(app);
-    
+````
+
 2. Run some dnode, and have acess to the same session that your client has access to in express
 3. Example - this is how you do it with mongoose-auth
 
-Dnode Authentication example using dnode-session
-------------------------------------------------
-
+Example
+-------
+Authentication example using dnode-session with mongoose-auth
+````javascript
     // first setup the auth code to check dnode-session
     var dnodeAuth = function (client, conn) {
 
@@ -81,6 +84,6 @@ Dnode Authentication example using dnode-session
         };
 	
     };
-    
+````
 MIT License
 
