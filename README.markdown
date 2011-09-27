@@ -34,37 +34,34 @@ var dnodeAuth = function (client, conn) {
     conn.on('sessionCheck', function() {
         if (!conn.session) {
             conn.end();
-            return;
         } else if (!conn.session.auth || !conn.session.auth.loggedIn) {
             conn.userId = 'anonymous';
             conn.loggedIn = false;
             conn.emit('authentication', false);
-            return;
         } else {
             conn.userId = conn.session.auth.userId;
             conn.loggedIn = conn.session.auth.loggedIn;
             conn.emit('authentication', true);
-            return;
         }
     });
     
     this.auth = function (callback) {
         callback(conn.auth);
-        return;
     };
     
     this.loggedIn = function (callback) {
         callback(conn.loggedIn);
-        return;
     };
     
     this.getUserId = function (callback) {
         callback(conn.userId);
-        return;
     };
 
 };
 ````
+This example exposes methods to the client and server-- loggedIn, getUserId, and auth 
+which, again, will work with mongoose-auth or other authentication modules that setup 
+the session/cookies with the same conventions as mongoose-auth
 
 Now just setup a simple app the implements the auth.
 
@@ -96,6 +93,28 @@ var exampleApp = function (client, conn) {
 };
 ````
 
+Methods
+-------
+
+Within the client and server, dnode-session supplies the following methods.
+
+sessionCheck()
+-------------------
+Force a session check.  This is the same function that is run based on the interval 
+which you may want to explicitly call before running certain commands.
+
+session(callback)
+--------------
+Return the full session object
+
+sessionId(callback)
+----------------
+Return the sessionId
+
+cookies(callback)
+--------------
+Return the cookies
+
 Notes
 -----
 
@@ -105,5 +124,6 @@ in an interval parameter along with the session like this:
     .use(dnodeSession( {store: new MonSession({interval: 120000 }), interval: 300000} ))
 
 Which checks the session every 5 minutes.
+
 
 MIT License
