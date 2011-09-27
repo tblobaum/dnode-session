@@ -70,7 +70,7 @@ Now just setup a simple dnode middleware that implements the auth.
 var exampleApp = function (client, conn) {
 
     // authReady will emit when you are authed, and it passes in a boolean
-    conn.on('authReady', function(auth) {
+    conn.on('authentication', function(auth) {
         if (!conn.loggedIn) {
             console.log(conn.id + ' is not loggedIn.');
         } else {
