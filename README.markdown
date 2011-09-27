@@ -21,69 +21,70 @@ dnode-sessions
 Example
 -------
 Authentication example using dnode-session with mongoose-auth
+
 ````javascript
-    // first setup the auth code to check dnode-session
-    var dnodeAuth = function (client, conn) {
+// first setup the auth code to check dnode-session
+var dnodeAuth = function (client, conn) {
 
-        conn.on('sessionCheck', function() {
-            if (!conn.session) {
-                conn.end();
-                return;
-            } else if (!conn.session.auth || !conn.session.auth.loggedIn) {
-                conn.userId = 'anonymous';
-                conn.loggedIn = false;
-                conn.emit('authentication', false);
-                return;
-            } else {
-                conn.userId = conn.session.auth.userId;
-                conn.loggedIn = conn.session.auth.loggedIn;
-                conn.emit('authentication', true);
-                return;
-            }
-        });
-        
-        this.auth = function (callback) {
-            callback(conn.auth);
+    conn.on('sessionCheck', function() {
+        if (!conn.session) {
+            conn.end();
             return;
-        };
-        
-        this.loggedIn = function (callback) {
-            callback(conn.loggedIn);
+        } else if (!conn.session.auth || !conn.session.auth.loggedIn) {
+            conn.userId = 'anonymous';
+            conn.loggedIn = false;
+            conn.emit('authentication', false);
             return;
-        };
-        
-        this.getUserId = function (callback) {
-            callback(conn.userId);
+        } else {
+            conn.userId = conn.session.auth.userId;
+            conn.loggedIn = conn.session.auth.loggedIn;
+            conn.emit('authentication', true);
             return;
-        };
-
-    };
-
-    // this is your actual app
-    var exampleApp = function (client, conn) {
+        }
+    });
     
-        // authReady will emit when you are authed, and it passes in a boolean
-	    conn.on('authReady', function(auth) {
-            if (!conn.loggedIn) {
-                console.log(conn.id + ' is not loggedIn.');
-            } else {
-                console.log(conn.id + ' is loggedIn.');
-            }
-	    });	
-
-        // this is it!
-        // a sample dnode function that checks auth
-        // you can use !conn.loggedIn to check auth throughout your dnode app
-        // you can also use conn.userId to get the same userId as in mongoose-auth
-        this.bing = function (num, callback) {
-            if (!conn.loggedIn) {
-                callback(num * 2);
-            } else {
-                callback(num * 10);
-            }
-        };
-	
+    this.auth = function (callback) {
+        callback(conn.auth);
+        return;
     };
+    
+    this.loggedIn = function (callback) {
+        callback(conn.loggedIn);
+        return;
+    };
+    
+    this.getUserId = function (callback) {
+        callback(conn.userId);
+        return;
+    };
+
+};
+
+// this is your actual app
+var exampleApp = function (client, conn) {
+
+    // authReady will emit when you are authed, and it passes in a boolean
+    conn.on('authReady', function(auth) {
+        if (!conn.loggedIn) {
+            console.log(conn.id + ' is not loggedIn.');
+        } else {
+            console.log(conn.id + ' is loggedIn.');
+        }
+    });	
+
+    // this is it!
+    // a sample dnode function that checks auth
+    // you can use !conn.loggedIn to check auth throughout your dnode app
+    // you can also use conn.userId to get the same userId as in mongoose-auth
+    this.bing = function (num, callback) {
+        if (!conn.loggedIn) {
+            callback(num * 2);
+        } else {
+            callback(num * 10);
+        }
+    };
+
+};
 ````
 MIT License
 
