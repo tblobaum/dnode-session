@@ -13,7 +13,7 @@ dnode-sessions
         .use(dnodeAuth) // <-- see the DnodeAuth example below
         .use(exampleApp) // <-- see the example dnode app below that implements dnode-session
         .listen(app);
-````
+````;
 
 2. Run some dnode, and have acess to the same session that your client has access to in express
 3. Example - this is how you do it with mongoose-auth
@@ -85,6 +85,7 @@ var exampleApp = function (client, conn) {
     };
 
 };
-````
+````;
+
 MIT License
 
