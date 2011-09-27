@@ -63,7 +63,7 @@ This example exposes methods to the client and server-- loggedIn, getUserId, and
 which, again, will work with mongoose-auth or other authentication modules that setup 
 the session/cookies with the same conventions as mongoose-auth
 
-Now just setup a simple app the implements the auth.
+Now just setup a simple dnode middleware that implements the auth.
 
 ```javascript
 // this is your actual app
