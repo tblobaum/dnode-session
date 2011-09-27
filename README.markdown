@@ -5,9 +5,9 @@ dnode-sessions
 
 1. Pass the same session into dnodeSession as you did with express
 
+```javascript
     var dnodeSession = require('dnode-session');
 
-```javascript
     Dnode()
         .use(dnodeSession( {store: new MonSession({interval: 120000 })} )) // <-- use the same as your express app
         .use(dnodeAuth) // <-- see the DnodeAuth example below
