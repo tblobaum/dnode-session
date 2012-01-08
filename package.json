@@ -2,14 +2,14 @@
   "author": "Thomas Blobaum <tblobaum@gmail.com> (http://tomblobaum.tumblr.com/)",
   "name": "dnode-session",
   "description": "Expose your connect/express sessions to dnode",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/tblobaum/dnode-session.git"
   },
   "main": "index.js",
   "engines": {
-    "node": "~v0.6.x"
+    "node": ">=v0.6.0"
   },
   "dependencies": {
     "connect": "~1.8.0"
