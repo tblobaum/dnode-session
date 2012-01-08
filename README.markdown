@@ -1,96 +1,75 @@
 dnode-session
 =============
 
+DNode session handling and integration with Express session storage
+
 Installation
 ------------
 
     npm install dnode-session
 
-Pass the same session into dnodeSession as you did with express
+or from source
+
+    git clone git://github.com/tblobaum/dnode-session.git 
+    cd request
+    npm link
+
+Pass the same session store into dnodeSession as you did with express for integration
 
 ```javascript
-var dnodeSession = require('dnode-session');
+var dnode = require('dnode')
+  , dnodeSession = require('dnode-session')
+  , connect = require('connect')
+  , express = require('express')
+  , redisStore = require('connect-redis')(express)
+  , server = express.createServer()
+  , sessionStore = new redisStore()
 
-Dnode()
-    .use(dnodeSession( {store: new MonSession({interval: 120000 })} )) // <-- use the same as your express app
-    .use(dnodeAuth) // <-- see the DnodeAuth example below
-    .use(exampleApp) // <-- see the example dnode app below that implements dnode-session
-    .listen(app);
+server.use(express.session({ 
+  secret: 'agent'
+, store: sessionStore
+})
+
+dnode()
+  .use(dnodeSession({
+    store: sessionStore
+  }))
+  .listen(server)
+
+server.listen()
 ````
-
-Run some dnode, and have acess to the same session that your client has access to in express
-
 
 Example
 -------
-Authentication example using dnode-session with mongoose-auth
 
-First setup an Authentication method for your app, this one works for mongoose-auth
+Basic usage
 
 ```javascript
-// first setup the auth code to check dnode-session
-var dnodeAuth = function (client, conn) {
-
-    conn.on('sessionCheck', function() {
-        if (!conn.session) {
-            conn.end();
-        } else if (!conn.session.auth || !conn.session.auth.loggedIn) {
-            conn.userId = 'anonymous';
-            conn.loggedIn = false;
-            conn.emit('authentication', false);
-        } else {
-            conn.userId = conn.session.auth.userId;
-            conn.loggedIn = conn.session.auth.loggedIn;
-            conn.emit('authentication', true);
-        }
-    });
-    
-    this.auth = function (callback) {
-        callback(conn.auth);
-    };
-    
-    this.loggedIn = function (callback) {
-        callback(conn.loggedIn);
-    };
-    
-    this.getUserId = function (callback) {
-        callback(conn.userId);
-    };
-
-};
+dnodeSession({
+  store: sessionStore
+})
 ````
-This example exposes methods to the client and server-- loggedIn, getUserId, and auth 
-which, again, will work with mongoose-auth or other authentication modules that setup 
-the session/cookies with the same conventions as mongoose-auth
 
-Now just setup a simple dnode middleware that implements the auth.
+Full configuration
 
 ```javascript
-// this is your actual app
-var exampleApp = function (client, conn) {
+dnodeSession({
+  store: sessionStore // session store object
+, key: 'connect.sid'  // (optional) session key
+, keepAlive: true     // (optional) keep session alive with dnode connection
+, interval: 120000    // (optional) keep alive refresh rate
+})
+````
 
-    // authReady will emit when you are authed, and it passes in a boolean
-    conn.on('authentication', function(auth) {
-        if (!conn.loggedIn) {
-            console.log(conn.id + ' is not loggedIn.');
-        } else {
-            console.log(conn.id + ' is loggedIn.');
-        }
-    });	
+Session manipulation
 
-    // this is it!
-    // a sample dnode function that checks auth
-    // you can use !conn.loggedIn to check auth throughout your dnode app
-    // you can also use conn.userId to get the same userId as in mongoose-auth
-    this.bing = function (num, callback) {
-        if (!conn.loggedIn) {
-            callback(num * 2);
-        } else {
-            callback(num * 10);
-        }
-    };
-
-};
+```javascript
+dnode.use(function(client, conn) {
+  this.session(function(err, sess) {
+    sess.foo = 'bar'
+    sess.save()
+  })
+})
 ````
 
 Methods
@@ -98,32 +77,19 @@ Methods
 
 Within the client and server, dnode-session supplies the following methods.
 
-sessionCheck()
--------------------
-Force a session check.  This is the same function that is run based on the interval 
-which you may want to explicitly call before running certain commands.
-
 session(callback)
---------------
-Return the full session object
+-----------------
 
-sessionId(callback)
-----------------
-Return the sessionId
+Return the session storage object, which can be modified
+
 
 cookies(callback)
---------------
-Return the cookies
+-----------------
 
-Notes
------
+Return the cookies that would be available from `req.cookies` in express
 
-By default the session will be checked every 120 seconds, you can override this by passing 
-in an interval parameter along with the session like this:
 
-    .use(dnodeSession( {store: new MonSession({interval: 120000 }), interval: 300000} ))
-
-Which checks the session every 5 minutes.
-
+License
+-------
 
 MIT License
