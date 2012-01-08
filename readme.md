@@ -11,7 +11,7 @@ Installation
 or from source
 
     git clone git://github.com/tblobaum/dnode-session.git 
-    cd request
+    cd dnode-session
     npm link
 
 Pass the same session store into dnodeSession as you did with express for integration
