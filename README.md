@@ -11,7 +11,7 @@ Installation
 or from source
 
     git clone git://github.com/tblobaum/dnode-session.git 
-    cd request
+    cd dnode-session
     npm link
 
 Pass the same session store into dnodeSession as you did with express for integration
@@ -19,7 +19,6 @@ Pass the same session store into dnodeSession as you did with express for integr
 ```javascript
 var dnode = require('dnode')
   , dnodeSession = require('dnode-session')
-  , connect = require('connect')
   , express = require('express')
   , redisStore = require('connect-redis')(express)
   , server = express.createServer()
