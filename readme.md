@@ -14,12 +14,22 @@ or from source
     cd dnode-session
     npm link
 
+Options
+-------
+
+* `key` session key (optional, default `connect.sid`)
+* `store` session store object
+* `keepAlive` persist session with socket connection (optional, default `true`)
+* `interval` refresh rate for keep alive (optional, default `120000`)
+
+Usage
+-----
+
 Pass the same session store into dnodeSession as you did with express for integration
 
 ```javascript
 var dnode = require('dnode')
   , dnodeSession = require('dnode-session')
-  , connect = require('connect')
   , express = require('express')
   , redisStore = require('connect-redis')(express)
   , server = express.createServer()
