@@ -8,8 +8,6 @@
 *.swp
 *.vi
 *~
-*.sublime-project
-.monitor
 
 # OS or Editor folders
 .DS_Store
@@ -18,6 +16,12 @@
 .settings
 nbproject
 thumbs.db
+
+# Logs
+.log
+.pid
+.sock
+.monitor
 
 # Dreamweaver added files
 _notes
@@ -28,12 +32,12 @@ dwsync.xml
 .komodotools
 
 # Folders to ignore
+node_modules
 .hg
 .svn
 publish
 .idea
 _dev
-node_modules
 
 # build script local files
 build/buildinfo.properties
